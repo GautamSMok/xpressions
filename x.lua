@@ -29,14 +29,14 @@ function x.print(item)
     if(type(item)=="table") then
         for i,v in ipairs(item) do
             if (i~=#item) then
-                io.write(v.." ")
+                io.write(tostring(v).." ")
             else
-                io.write(v)
+                io.write(tostring(v))
             end
         end
         io.write("\n")
     else
-        io.write(item.."\n")
+        io.write(tostring(item).."\n")
     end
 end
 

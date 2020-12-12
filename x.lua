@@ -33,6 +33,27 @@ function x.print(item)
             else
                 io.write(tostring(v))
             end
+            i = i + 1
+        end
+        io.write("\n")
+    else
+        io.write(tostring(item).."\n")
+    end
+end
+
+function x.iprint(item) 
+    if(type(item)=="table") then
+        local i = 1
+        for k,v in pairs(item) do
+            if(k) then
+                io.write(k.."=")
+            end
+            if (i~=#item) then
+                io.write(tostring(v).." ")
+            else
+                io.write(tostring(v))
+            end
+            i = i + 1
         end
         io.write("\n")
     else
@@ -59,8 +80,52 @@ function x.reverse(lst)
     return result
 end
 
+
+function x.sortr(tbl,key,d)
+	local rowTables = {}
+	for _,row in ipairs(tbl) do
+		table.insert(rowTables,row)
+	end
+	table.sort(rowTables,function(t1,t2)
+            if(d and d == true) then
+                return t1[key] > t2[key]
+            else
+                return t1[key] < t2[key]
+            end
+            end
+              )
+	return rowTables
+end
+
+function x.splitAt(lst,n)
+    local first = {}
+    local second = {}
+    
+    for i = 1, #lst - n, 1 do
+        table.insert(first,lst[i])
+    end
+    
+    for i = n,#lst,1 do
+        table.insert(second,lst[i])
+    end
+    
+    return first,second
+end
+
+function x.length(lst)
+    return #lst
+end
+
+function x.first(lst)
+    return x.head(lst)
+end
+
 function x.init(lst)
-    --returns list except last element
+    local result = {}
+    for i = 1,(#lst)-1,1 do
+        table.insert(result,lst[i])
+    end
+    return result
 end
 
 function x.last(lst)
@@ -152,6 +217,19 @@ function makeCopy(lst)
 	return result
 end
 
+function x.add(lst,item)
+	local copy = makeCopy(lst)
+	table.insert(copy,item)
+	return copy
+end
+
+function addRange(lst,items)
+	local copy = makeCopy(lst)
+	for _,item in ipairs(items) do
+		table.insert(copy,item)
+	end
+	return copy
+end
 
 function x.sort(lst,cmp)
 	local copy = makeCopy(lst)
@@ -364,5 +442,26 @@ function x.map(lst,f)
 	end
 	return selected
 end
+
+-- dictionary
+x.dictionary = {}
+function x.dictionary:new()
+    local obj = {}
+    self.__index = self
+    setmetatable(obj,self)
+    return obj
+end
+
+function x.dictionary:add(k,v)
+    if(not(self[k])) then
+        self[k]=v
+    end
+end
+
+
+
+
+
+
 
 return x
